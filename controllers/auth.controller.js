@@ -22,23 +22,36 @@ catch(err) {
 }
 }
 
-module.exports.signIn = async(req, res) => {
-    const { email, password } = req.body
-
+module.exports.signIn = async (req, res) => {
     try {
+        const { email, password } = req.body;
         const user = await UserModel.login(email, password);
         const token = createToken(user._id);
-        res.cookies('jwt', token, { httpOnly: true, maxAge});
-        res.statues(200).json({ user: user._id})
-    } catch(err){
+      const maxAge = 1 * 60 * 60 * 1000;
+        res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge,
+        secure: true,
+        sameSite: "Strict",
+    });
+
+        res.status(200).send({ msg: "login successfully", user, token });
+    } catch (err) {
         const errors = signInErrors(err);
-        res.status(200).json({ errors });
-
-        }
-
+        res.status(400).json({ errors });
     }
+};
 
 module.exports.logout = (req, res) => {
-res.cookie('jwt', '', { maxAge: 1 });
-res.redirect('/');
-}
+
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+        maxAge: 1,
+    });
+
+res.send({msg: "logout successfully"})
+
+};
+logout

@@ -1,8 +1,9 @@
 const UserModel = require('../models/user.model');
 const fs = require('fs');
 const { promisify } = require('util');
-const pipeline = promisify(require('strem').pipeline);
+const pipeline = promisify(require('stream').pipeline);
 const { uploadErrors } = require("../utils/errors.utils");
+const stream = require('stream').pipeline;
 
 module.exports.uploadProfil = async (req, res) => {
     try {
