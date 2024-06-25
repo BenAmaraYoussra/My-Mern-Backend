@@ -54,4 +54,3 @@ module.exports.logout = (req, res) => {
 res.send({msg: "logout successfully"})
 
 };
-logout
