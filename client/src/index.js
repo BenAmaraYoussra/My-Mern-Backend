@@ -4,28 +4,33 @@ import App from "./App";
 import "./styles/index.scss";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
-import thunk from "redux-thunk";
+import { getPosts } from "./actions/post.actions";
+import {Router} from  "react-router-dom";
+//import { createEpicMiddleware } from 'redux-observable';
 import rootReducer from "./reducers";
 import { getUsers } from "./actions/users.actions";
 // dev tools
 import { composeWithDevTools } from "redux-devtools-extension";
-import { getPosts } from "./actions/post.actions";
+import {thunk} from 'redux-thunk';
+
+
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk)) 
 );
+
 
 store.dispatch(getUsers());
 store.dispatch(getPosts());
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <Provider store={store}>
         <App />
       </Provider>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
